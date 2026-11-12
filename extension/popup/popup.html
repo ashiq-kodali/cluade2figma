@@ -1,0 +1,38 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <title>Claude Design → Figma</title>
+    <link rel="stylesheet" href="popup.css" />
+  </head>
+  <body>
+    <header>
+      <img src="../icons/48.png" alt="" width="28" height="28" />
+      <div>
+        <h1>Claude Design → Figma</h1>
+        <p class="sub">Copy a frame, then <span class="paste">⌘V</span> in Figma</p>
+      </div>
+    </header>
+
+    <main id="main" hidden>
+      <button id="pick" class="primary">Pick a frame on the page</button>
+      <p class="hint">
+        <kbd class="k-alt">Alt</kbd><kbd>⇧</kbd><kbd>F</kbd> to pick · <kbd>↑</kbd><kbd>↓</kbd> parent / child ·
+        <kbd>Esc</kbd> cancel
+      </p>
+
+      <div class="list-head">
+        <h2>Frames on this page</h2>
+        <button id="refresh" class="ghost" title="Refresh list" aria-label="Refresh list">↻</button>
+      </div>
+      <ul id="frames"><li class="empty">Looking for frames…</li></ul>
+    </main>
+
+    <section id="off" hidden>
+      <p>Open a <b>Claude Design</b> page on claude.ai to pick and copy frames.</p>
+    </section>
+
+    <div id="status" role="status" aria-live="polite"></div>
+    <script src="popup.js"></script>
+  </body>
+</html>

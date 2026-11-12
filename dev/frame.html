@@ -1,0 +1,39 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <title>Embedded design</title>
+    <script>
+      window.chrome = {
+        runtime: {
+          sendMessage: async (m) => (m && m.type === 'c2f-copy-text' ? ((window.top.__copied = m.text), { ok: true }) : null),
+          onMessage: { addListener: (fn) => (window.__listeners = window.__listeners || []).push(fn) }
+        }
+      };
+    </script>
+    <script src="../extension/content/ns.js"></script>
+    <script src="../extension/lib/image.js"></script>
+    <script src="../extension/content/serialize.js"></script>
+    <script src="../extension/content/to-svg.js"></script>
+    <script src="../extension/content/frames.js"></script>
+    <script src="../extension/content/picker.js"></script>
+    <script>
+      C2F.dev = true;
+    </script>
+    <style>
+      body { margin: 0; font-family: -apple-system, system-ui, sans-serif; background: #fdf6ee; }
+      .wrap { padding: 16px; display: flex; flex-direction: column; gap: 10px; }
+      h3 { margin: 0; font-size: 16px; color: #1f1e1d; }
+      .pill { align-self: flex-start; background: #d97757; color: #fff; border-radius: 999px; padding: 4px 10px; font-size: 12px; font-weight: 600; }
+      .row { display: flex; gap: 8px; }
+      .tile { flex: 1; height: 48px; border-radius: 8px; background: linear-gradient(135deg, #7aa2c9, #b9d1e8); }
+    </style>
+  </head>
+  <body>
+    <div class="wrap">
+      <h3>Child content inside an iframe</h3>
+      <span class="pill">Nested child</span>
+      <div class="row"><div class="tile"></div><div class="tile"></div><div class="tile"></div></div>
+    </div>
+  </body>
+</html>

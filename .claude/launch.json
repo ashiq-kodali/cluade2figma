@@ -1,0 +1,11 @@
+{
+  "version": "0.0.1",
+  "configurations": [
+    {
+      "name": "fixture",
+      "runtimeExecutable": "python3",
+      "runtimeArgs": ["dev/serve.py", "5179"],
+      "port": 5179
+    }
+  ]
+}

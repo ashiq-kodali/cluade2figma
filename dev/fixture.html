@@ -1,0 +1,106 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <title>C2F fixture</title>
+    <script>
+      // Minimal chrome.* stub so the content scripts run on a plain page.
+      window.chrome = {
+        runtime: {
+          sendMessage: async (m) => (m && m.type === 'c2f-copy-text' ? ((window.__copied = m.text), { ok: true }) : null),
+          onMessage: { addListener: (fn) => (window.__listeners = window.__listeners || []).push(fn) }
+        }
+      };
+    </script>
+    <script src="../extension/content/ns.js"></script>
+    <script src="../extension/lib/image.js"></script>
+    <script src="../extension/content/serialize.js"></script>
+    <script src="../extension/content/to-svg.js"></script>
+    <script src="../extension/content/frames.js"></script>
+    <script src="../extension/content/picker.js"></script>
+    <style>
+      body { margin: 0; font-family: -apple-system, system-ui, sans-serif; background: #ece9e1; }
+      .canvas { padding: 24px; display: flex; gap: 32px; align-items: flex-start; }
+      .zoom { transform: scale(0.8); transform-origin: top left; }
+      .card {
+        width: 340px; background: #fff; border-radius: 16px; padding: 20px; display: flex; flex-direction: column; gap: 14px;
+        box-shadow: 0 10px 30px rgba(0,0,0,.12), 0 1px 3px rgba(0,0,0,.08); border: 1px solid #e5e2da;
+      }
+      .head { display: flex; align-items: center; gap: 10px; }
+      .avatar { width: 40px; height: 40px; border-radius: 50%; object-fit: cover; }
+      .title { font-size: 18px; font-weight: 700; color: oklch(0.3 0.02 60); }
+      .sub { font-size: 13px; color: #6b6a66; }
+      .hero { height: 120px; border-radius: 12px; background: linear-gradient(135deg, #d97757 0%, #f2c46d 100%); display: flex;
+        align-items: flex-end; padding: 12px; color: #fff; font-weight: 600; font-size: 22px; }
+      p { margin: 0; font-size: 14px; line-height: 21px; color: #3d3c39; }
+      .row { display: flex; justify-content: space-between; align-items: center; }
+      .btn { background: #1f1e1d; color: #fff; border: 0; border-radius: 8px; padding: 10px 16px; font: 600 14px/1 system-ui; display: inline-flex; gap: 6px; align-items: center; }
+      .chip { border: 1px dashed #d97757; color: #d97757; border-radius: 999px; padding: 4px 10px; font-size: 12px; }
+      input { border: 1px solid #d6d3c9; border-radius: 8px; padding: 9px 12px; font-size: 14px; }
+      .tools { position: fixed; right: 12px; top: 12px; display: flex; gap: 8px; }
+      #out { display: flex; gap: 24px; padding: 0 24px 24px; align-items: flex-start; }
+      #out img { background: repeating-conic-gradient(#ddd 0 25%, #fff 0 50%) 0 0 / 16px 16px; outline: 1px solid #c00; }
+    </style>
+  </head>
+  <body>
+    <div class="canvas">
+      <div class="card" id="card1" data-name="Profile card">
+        <div class="head">
+          <img class="avatar" alt="Avatar" src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 40 40'%3E%3Crect width='40' height='40' fill='%237aa2c9'/%3E%3Ccircle cx='20' cy='16' r='7' fill='%23fff'/%3E%3C/svg%3E" />
+          <div>
+            <div class="title">Ada Lovelace</div>
+            <div class="sub">Analytical Engine · London</div>
+          </div>
+        </div>
+        <div class="hero">Hello, <em>&nbsp;world</em></div>
+        <p>Design systems are <b>shared languages</b> between design and code. This paragraph wraps onto several lines to test text layout.</p>
+        <div class="row">
+          <span class="chip">Draft</span>
+          <button class="btn">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+            Continue
+          </button>
+        </div>
+        <input placeholder="Email address" />
+      </div>
+
+      <div class="card" id="card3" data-name="Scroll card" style="height: 220px">
+        <div class="title">Scrolling list</div>
+        <div class="list" style="flex: 1; min-height: 0; overflow: auto; display: flex; flex-direction: column; gap: 8px">
+          <p>Item 1</p><p>Item 2</p><p>Item 3</p><p>Item 4</p><p>Item 5</p>
+          <p>Item 6</p><p>Item 7</p><p>Item 8</p><p>Item 9</p><p>Item 10 — last</p>
+        </div>
+      </div>
+
+      <div class="card" id="card4" data-name="Artboard with iframe">
+        <div class="title">Artboard</div>
+        <iframe src="frame.html" title="Design frame" style="width: 300px; height: 170px; border: 1px solid #e5e2da; border-radius: 8px"></iframe>
+      </div>
+
+      <div class="zoom">
+        <div class="card" id="card2" data-name="Zoomed card">
+          <div class="title">Zoomed 80%</div>
+          <p>This card sits inside a scale(0.8) wrapper; it should still copy at 340px wide.</p>
+        </div>
+      </div>
+    </div>
+    <div id="out"></div>
+
+    <script>
+      async function run(id) {
+        const el = document.getElementById(id);
+        const payload = await C2F.serialize(el);
+        const svg = C2F.toSVG(payload);
+        const img = new Image();
+        img.src = 'data:image/svg+xml;charset=utf-8,' + encodeURIComponent(svg);
+        img.title = id;
+        document.getElementById('out').append(img);
+        window.__payloads = window.__payloads || {};
+        window.__payloads[id] = { payload, svg };
+        return { w: payload.w, h: payload.h, svgBytes: svg.length };
+      }
+      C2F.dev = true;
+      window.__runAll = async () => [await run('card1'), await run('card2'), await run('card3'), await run('card4')];
+    </script>
+  </body>
+</html>

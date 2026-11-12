@@ -1,0 +1,43 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1280 300" width="1280" height="300" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Inter, Helvetica, Arial, sans-serif">
+  <defs>
+    <linearGradient id="line" gradientUnits="userSpaceOnUse" x1="300" y1="0" x2="980" y2="0">
+      <stop offset="0" stop-color="#d97757"/>
+      <stop offset="1" stop-color="#a259ff"/>
+    </linearGradient>
+  </defs>
+  <rect width="1280" height="300" rx="24" fill="#faf7f2"/>
+  <rect x="0.5" y="0.5" width="1279" height="299" rx="23.5" fill="none" stroke="#e5e2da"/>
+
+  <path d="M300 128 H980" stroke="url(#line)" stroke-width="3" stroke-dasharray="2 10" stroke-linecap="round"/>
+
+  <!-- Step 1 -->
+  <g transform="translate(150 0)">
+    <circle cx="90" cy="128" r="56" fill="#fff" stroke="#d97757" stroke-width="3"/>
+    <path d="M74 106 L74 150 L86 139 L94 156 L101 153 L93 136 L108 136 Z" fill="#1f1e1d"/>
+    <rect x="62" y="98" width="56" height="60" rx="6" fill="none" stroke="#d97757" stroke-width="2" stroke-dasharray="5 3"/>
+    <text x="90" y="222" text-anchor="middle" font-size="22" font-weight="800" fill="#1f1e1d">1 · Pick</text>
+    <text x="90" y="250" text-anchor="middle" font-size="15" fill="#6b6a66">⌥⇧F, then click a frame</text>
+  </g>
+
+  <!-- Step 2 -->
+  <g transform="translate(550 0)">
+    <circle cx="90" cy="128" r="56" fill="#fff" stroke="#c2694e" stroke-width="3"/>
+    <rect x="70" y="100" width="34" height="42" rx="6" fill="none" stroke="#1f1e1d" stroke-width="3"/>
+    <rect x="80" y="112" width="34" height="42" rx="6" fill="#fff" stroke="#1f1e1d" stroke-width="3"/>
+    <path d="M88 133 l6 6 l12 -13" fill="none" stroke="#d97757" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/>
+    <text x="90" y="222" text-anchor="middle" font-size="22" font-weight="800" fill="#1f1e1d">2 · Copy</text>
+    <text x="90" y="250" text-anchor="middle" font-size="15" fill="#6b6a66">Enter, or "Copy to Figma"</text>
+  </g>
+
+  <!-- Step 3 -->
+  <g transform="translate(950 0)">
+    <circle cx="90" cy="128" r="56" fill="#fff" stroke="#a259ff" stroke-width="3"/>
+    <g transform="translate(90 128)" stroke-linejoin="round" stroke-width="3">
+      <path d="M-28 12 L0 26 L28 12" fill="none" stroke="#c9b3f5"/>
+      <path d="M-28 0 L0 14 L28 0" fill="none" stroke="#a98be8"/>
+      <path d="M-28 -12 L0 -26 L28 -12 L0 2 Z" fill="#a259ff" stroke="#a259ff"/>
+    </g>
+    <text x="90" y="222" text-anchor="middle" font-size="22" font-weight="800" fill="#1f1e1d">3 · Paste</text>
+    <text x="90" y="250" text-anchor="middle" font-size="15" fill="#6b6a66">⌘V in any Figma file</text>
+  </g>
+</svg>
